@@ -1,0 +1,9 @@
+cloning this repo
+-----------------
+
+git clone ~adanner/public/repos/tg-demo
+
+
+basic git help
+--------------
+http://www-cs-students.stanford.edu/~blynn/gitmagic/

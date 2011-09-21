@@ -1,0 +1,16 @@
+getting started
+---------------
+
+in your base directory, where the CMakeLists.txt file resides:
+
+(initial build)
+
+mkdir build
+cd build
+cmake ..
+make -j8
+
+for future builds, you should only need to type make -j8
+
+all build files go into the build directory. You can run make clean if you want, or you can alternatively safely delete the entire build directory. It contains nothing but automatically generated files. 
+
