@@ -1,0 +1,88 @@
+Andrew Danner 21 Sep 2011
+adanner@cs.swarthmore.edu
+
+This document describes using the batch submission tool qsub on longhorn
+
+The general form is to run
+ 
+ $ qsub scriptname
+
+-------------------
+running hello world
+-------------------
+
+in the jobscripts directory, we can start with 
+longhorn-hello
+
+If you are not adanner, you may want to change the -M flag for email notifications and the BINHOME directory to match your setup before running the script
+
+I started with the script at http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#running , but it doesn't explain a few things I found important, the most confusing being the parallel environment or the -pe flag
+
+For hello world, I just want one process on one node. Another site
+https://sites.google.com/site/tacchadoop/home/submit-a-job-request describes the crazy -pe options a bit better
+
+-pe: Specify how many nodes you want to use
+    1st argument is number of processes per node (1, 2, 4, or 8)
+    2nd argument is number of nodes but expressed in an odd way: in terms of number of processors. Each node has 8 processors, so to request n nodes, you use 8n (e.g. 8=1 node, 32=4 nodes, etc.)
+
+Some concrete examples:
+
+-pe 8way 8   
+allocates one node with 8 processes 
+1/8th available RAM per process
+two dedicated GPUs
+
+-pe 8way 32
+allocates four nodes, each with 8 processes (32 total processes)
+1/8th available RAM per process on each node
+eight dedicated GPUs (two per node)
+
+-pe 4way 16	
+allocates two nodes, each with 4 processes (8 total processes)
+1/4th available RAM per process on each node
+four dedicated GPUs (two per node)
+
+-pe 1way 24	
+allocates three nodes, each with 1 process (3 total processes)
+all available RAM per process on each node
+six dedicated GPUs (two per node)
+
+-pe 1way 8	
+allocates one nodes, each with 1 process (1 total processes)
+all available RAM per process on each node
+two dedicated GPUs (two per node)
+
+the last option "-pe 1way 8" is the magic incantation for a single process on a single node.
+
+some other helpful options that are sparsely documented
+
+-q : the queue name. options on longhorn are normal|long|largemem|development
+
+Queue Name 	Max Runtime 	Max Cores 	Node Pool
+normal 	6 hrs 	128 	All nodes
+long 	24 hrs 	128 	All nodes
+largemem 	8 hrs 	128 	16 large memory nodes
+development 	1 hr 	32 	8 nodes
+request 	--- 	--- 	special requests
+
+Since hello world should run pretty fast, the development queue is fine
+
+-P : project type. options on longhorn are vis, data, gpgpu, hpc
+
+Type 	Purpose 	Special Environment Modifications
+vis 	Visualization jobs 	 
+data 	Data Analysis jobs 	 
+gpgpu 	GPGPU jobs 	disables X server
+hpc 	HPC jobs
+
+data seemed like a fine option here. gpgpu may be needed for CUDA applications
+
+after changing the -M flag and BINHOME, run 
+
+ qsub longhorn-hello 
+
+you should get a log file that displays some metadata about the job followed
+by the output of the program "Hello Teragrid!". You should also get notified
+via email about the start and end of the job.
+
+
