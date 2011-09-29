@@ -1,0 +1,5 @@
+# common sge/qsub settings can go here instead of in your regular 
+# qsub scripts. You can always override these settings in a script
+
+-M adanner@cs.swarthmore.edu # Send status messages here
+-m be                        # Email at begin and end of job
