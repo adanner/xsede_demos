@@ -18,3 +18,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 add_executable(hello hello.cpp)
+
+find_package(MPI REQUIRED)
+include_directories(${MPI_INCLUDE_PATH})
+
+add_executable(mpi-hello mpi-hello.cpp)
+target_link_libraries(mpi-hello ${MPI_LIBRARIES})

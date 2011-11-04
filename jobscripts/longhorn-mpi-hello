@@ -14,9 +14,7 @@
 #$ -pe 8way 8              # 8 processes on one host
 #$ -q development          # Queue name "normal|long|largemem|development"
 #$ -P data                 # SGE project type (one of: vis, data, gpgpu, hpc) 
-#$ -M adanner@cs.swarthmore.edu #address for status messages
 #$ -l h_rt=00:01:00        # Run time (hh:mm:ss)
-#$ -m be                   # Email at Begin and End of job
 set -x                     # Echo commands, use "set echo" with csh
 
 #reduce the number of mpi jobs from the max available from -pe

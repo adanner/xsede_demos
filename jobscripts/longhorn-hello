@@ -7,16 +7,14 @@
 #$ -cwd                    # Start job in submission directory
 #$ -N hello                # Job Name
 #$ -j y                    # Combine stderr and stdout
-#$ -o $JOB_NAME.o$JOB_ID   # Name of the output file (eg. myMPI.oJobID)
+#$ -o $HOME/logs/$JOB_NAME.o$JOB_ID   # Name of the output file
 #$ -pe 1way 8              # 1 task/node, 8 nodes
 #$ -q development          # Queue name "normal|long|largemem|development"
 #$ -P data                 # SGE project type (one of: vis, data, gpgpu, hpc) 
-#$ -M adanner@cs.swarthmore.edu #address for status messages
-#$ -l h_rt=00:01:00        # Run time (hh:mm:ss)
-#$ -m be                   # Email at Begin and End of job
+#$ -l h_rt=00:00:15        # Run time (hh:mm:ss)
 set -x                     # Echo commands, use "set echo" with csh
 
 #set the path to the executables
-export BINHOME=$HOME/research/tg-demos/build
+export BINHOME=$HOME/tg-demos/build
 $BINHOME/hello             # Run the single thread executable named "hello"
 
