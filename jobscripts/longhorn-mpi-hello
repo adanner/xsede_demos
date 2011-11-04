@@ -18,7 +18,7 @@
 set -x                     # Echo commands, use "set echo" with csh
 
 #reduce the number of mpi jobs from the max available from -pe
-export MY_NSLOTS=6
+export MY_NSLOTS=7
 
 #set the path to the executables
 export BINHOME=$HOME/research/tg-demos/build
