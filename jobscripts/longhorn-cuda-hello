@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# adapted from http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#appdev
+# see also /share/doc/sge on longhorn
+
+#$ -V                      # Inherit the submission environment
+#$ -cwd                    # Start job in submission directory
+#$ -N cuda-hello           # Job Name
+#$ -j y                    # Combine stderr and stdout
+#$ -o $HOME/logs/$JOB_NAME.o$JOB_ID   # Name of the output file
+#$ -pe 1way 8              # 1 task/node, 8 nodes
+#$ -q development          # Queue name "normal|long|largemem|development"
+#$ -P gpgpu                # SGE project type (one of: vis, data, gpgpu, hpc) 
+#$ -l h_rt=00:00:15        # Run time (hh:mm:ss)
+set -x                     # Echo commands, use "set echo" with csh
+
+#set the path to the executables
+export BINHOME=$HOME/tg-demos/build
+$BINHOME/cuda-hello        # Run the single thread cuda app "cuda-hello"
+

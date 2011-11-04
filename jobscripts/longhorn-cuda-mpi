@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# adapted from http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#appdev
+# see also /share/doc/sge on longhorn
+
+#$ -V                      # Inherit the submission environment
+#$ -cwd                    # Start job in submission directory
+#$ -N cuda-mpi             # Job Name
+#$ -j y                    # Combine stderr and stdout
+#$ -o $HOME/logs/$JOB_NAME.o$JOB_ID   # Name of the output file
+#$ -pe 1way 32             # 1 task/node, 4 hosts (4*8=32)
+#$ -q development          # Queue name "normal|long|largemem|development"
+#$ -P gpgpu                # SGE project type (one of: vis, data, gpgpu, hpc) 
+#$ -l h_rt=00:00:45        # Run time (hh:mm:ss)
+set -x                     # Echo commands, use "set echo" with csh
+
+#set the path to the executables
+export BINHOME=$HOME/tg-demos/build
+
+#only openmpi supports the --output-filename option
+ibrun --output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log $BINHOME/cuda-mpi 8       
+#suitable for openmpi and mvapich2
+#ibrun $BINHOME/cuda-mpi 8
