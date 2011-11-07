@@ -1,14 +1,33 @@
 #include "book.h"
 #include <cstdlib>
-#include "cuda-vecsum.h"
+#include "cuda-wrappers.h"
 
 /* Compute vector sum c=a+scale*b on GPU. a,b,c reside on GPU memory.
  * This function must be launched as a CUDA kernel */
-__global__ void scalarVecSum( int* a, int* b, int N, int scale, int* c) {
-    int tid = blockIdx.x;    // this thread handles the data at its thread id
-    if (tid < N){
-        c[tid] = a[tid] + scale*b[tid];
-		}
+__global__ void scalarVecSum( int* a, int* b, int N, int scale, int* c);
+
+/* Return number of CUDA devices available on current host, 
+ * returns 0 if error, or no devices found.*/
+int getGPUCount(){
+	int ans=0;
+  if(cudaGetDeviceCount(&ans) != cudaSuccess){
+		return 0;
+	}
+	return ans;
+}
+
+/* Select and set the current GPU for current thread/process id
+ * Assumes the number of processes/threads per host is no greater
+ * than the number of GPUs. Returns -1 if there is an error, and a 
+ * valid GPU id if no error. The current GPU device will be set to the
+ * valid GPU id, so the user does not need to set this after calling the
+ * function */
+int pickGPU(int rank, int ngpus){
+	int gpuID = rank%ngpus; //any better way?
+	if(cudaSetDevice(gpuID) != cudaSuccess){
+		return -1;
+	}
+	return gpuID;
 }
 
 /* Compute vector sum c=a+scale*b using GPU. a,b,c reside in host memory, 
@@ -40,4 +59,14 @@ void addVectors(int* a, int* b, int N, int scale, int* c){
     HANDLE_ERROR( cudaFree( dev_c ) );
     return;
 }
+
+/* Compute vector sum c=a+scale*b on GPU. a,b,c reside on GPU memory.
+ * This function must be launched as a CUDA kernel */
+__global__ void scalarVecSum( int* a, int* b, int N, int scale, int* c) {
+    int tid = blockIdx.x;    // this thread handles the data at its thread id
+    if (tid < N){
+        c[tid] = a[tid] + scale*b[tid];
+		}
+}
+
 

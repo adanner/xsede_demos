@@ -21,11 +21,18 @@ set -x                     # Echo commands, use "set echo" with csh
 export MY_NSLOTS=7
 
 #set the path to the executables
-export BINHOME=$HOME/research/tg-demos/build
+export BINHOME=$HOME/tg-demos/build
 #run app 
 
-#only openmpi supports the --output-filename option
-#ibrun --output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log $BINHOME/mpi-hello       
-#suitable for openmpi and mvapich2
-ibrun $BINHOME/mpi-hello       
+
+LOGOPT=""
+
+#if using openmpi, we can dump the standard output of each process
+#to a separate file
+if which mpirun | grep -q openmpi 
+then
+  LOGOPT="--output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log"
+fi
+
+ibrun $LOGOPT $BINHOME/mpi-hello       
 

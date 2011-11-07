@@ -5,17 +5,18 @@
 
 #$ -V                      # Inherit the submission environment
 #$ -cwd                    # Start job in submission directory
-#$ -N cuda-mpi             # Job Name
+#$ -N cuda-mpi-multi       # Job Name
 #$ -j y                    # Combine stderr and stdout
 #$ -o $HOME/logs/$JOB_NAME.o$JOB_ID   # Name of the output file
-#$ -pe 1way 32             # 1 task/node, 4 hosts (4*8=32)
+#$ -pe 2way 32             # 2 task/node, 4 hosts (4*8=32)
 #$ -q development          # Queue name "normal|long|largemem|development"
 #$ -P gpgpu                # SGE project type (one of: vis, data, gpgpu, hpc) 
 #$ -l h_rt=00:00:45        # Run time (hh:mm:ss)
 set -x                     # Echo commands, use "set echo" with csh
 
 #set the path to the executables
-export BINHOME=$HOME/tg-demos/build
+
+BINHOME=$HOME/tg-demos/build
 LOGOPT=""
 
 #if using openmpi, we can dump the standard output of each process
@@ -25,4 +26,4 @@ then
   LOGOPT="--output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log"
 fi
 
-ibrun $LOGOPT $BINHOME/cuda-mpi 8
+ibrun $LOGOPT $BINHOME/cuda-mpi-multi-gpu 8       

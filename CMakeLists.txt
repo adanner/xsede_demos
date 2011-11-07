@@ -24,10 +24,13 @@ if(CUDA_FOUND)
 	message("CUDA found")
 	cuda_add_executable(cuda-hello cuda-hello.cu)
 
-	cuda_add_library(vecsum cuda-vecsum.h cuda-vecsum.cu)
+	cuda_add_library(cudawrap cuda-wrappers.h cuda-wrappers.cu)
 
 	add_executable(cuda-mpi cuda-mpi.cpp)
-	target_link_libraries(cuda-mpi vecsum ${MPI_LIBRARIES})
+	target_link_libraries(cuda-mpi cudawrap ${MPI_LIBRARIES})
+	
+	add_executable(cuda-mpi-multi-gpu cuda-mpi-multi-gpu.cpp)
+	target_link_libraries(cuda-mpi-multi-gpu cudawrap ${MPI_LIBRARIES})
 
 	cuda_build_clean_target()
 else(CUDA_FOUND)

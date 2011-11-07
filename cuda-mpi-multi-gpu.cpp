@@ -32,8 +32,28 @@ int main(int argc, char** argv){
 		c[i]=0;
 	}
 
-  std::cout << "Running CUDA kernel...." << std::endl;
+	//Get number of GPUs per physical host
+	int ngpus = getGPUCount();
+ 
+	std::cout << "I see " << ngpus << " CUDA devices on this host " 
+		<< std::endl;
+
+	if(ngpus == 0){
+		printf("No GPUs found. Exiting");
+		return 2;
+	}
+
+	int myGPU = pickGPU(rank,ngpus);
+	std::cout << "Using gpu ID " << myGPU << std::endl;
+
+  if(myGPU == -1){
+    printf("Unable to select GPU. Ensure MPI processes"
+	  		" per host is no greater than number of GPUs");
+		return 3;
+  }
+	
 	//Call the function that hides all the CUDA details
+  std::cout << "Running CUDA kernel...." << std::endl;
 	addVectors(a,b,n,rank,c);
 
 	// display the results

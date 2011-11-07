@@ -16,5 +16,6 @@ set -x                     # Echo commands, use "set echo" with csh
 
 #set the path to the executables
 export BINHOME=$HOME/tg-demos/build
+
 $BINHOME/hello             # Run the single thread executable named "hello"
 
