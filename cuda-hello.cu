@@ -18,6 +18,10 @@
 
 #define N   10
 
+/* A CUDA kernel executed in parallel on the GPU
+ * adds the two arrays a and b of size N and stores
+ * the result in array c. CUDA kernels must have a void 
+ * return type*/
 __global__ void add( int *a, int *b, int *c ) {
     int tid = blockIdx.x;    // this thread handles the data at its thread id
     if (tid < N)
@@ -45,6 +49,7 @@ int main( void ) {
     HANDLE_ERROR( cudaMemcpy( dev_b, b, N * sizeof(int),
                               cudaMemcpyHostToDevice ) );
 
+		//Call kernel function with N blocks
     add<<<N,1>>>( dev_a, dev_b, dev_c );
 
     // copy the array 'c' back from the GPU to the CPU
