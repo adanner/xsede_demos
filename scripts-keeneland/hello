@@ -11,9 +11,6 @@
 # select bash as shell
 #PBS -S /bin/bash
 #
-# export all my environment variables to the job
-#PBS -V
-#
 # walltime : maximum wall clock time (hh:mm:ss)
 #PBS -l walltime=00:02:00
 #
@@ -39,10 +36,8 @@
 ##PBS -e testjob.err
 #
 # 
-# select queue: options are debug/normal qstat -q
-# debug: 4 nodes max, 30 minutes
-# normal: 18 nodes max, 12 hours
-#PBS -q normal
+# select queue: options are batch qstat -q
+#PBS -q batch
 
 # End of embedded QSUB options
 #
@@ -54,11 +49,13 @@ set -x
 # Go to the job scratch directory. Use cdjob <jobid> to go to this
 # directory once the job has started.
 
-cd $SCR
 
-BINHOME=$HOME/tg-demos/build
+BINHOME=$HOME/xsede-demos/build
 
-# Copy executable to the job scratch directory ($SCR)
-# (Use msscmd to get your files if they are in NCSA MSS)
-cp $BINHOME/hello .
+date 
+
+cd $BINHOME
 ./hello
+
+date
+
