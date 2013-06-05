@@ -12,7 +12,7 @@
 #PBS -S /bin/bash
 #
 # walltime : maximum wall clock time (hh:mm:ss)
-#PBS -l walltime=00:02:00
+#PBS -l walltime=00:01:00
 #
 # nodes: number of 16-core nodes
 #   ppn: how many cores per node to use (1 through 16)
@@ -49,10 +49,11 @@ set -x
 # Go to the job scratch directory. Use cdjob <jobid> to go to this
 # directory once the job has started.
 
-
 BINHOME=$HOME/xsede-demos/build
 
 date 
+
+qstat -f $PBS_JOBID
 
 cd $BINHOME
 ./hello

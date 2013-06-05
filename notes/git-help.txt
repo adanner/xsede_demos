@@ -1,9 +1,9 @@
 cloning this repo
 -----------------
-
-git clone ~adanner/public/repos/tg-demo
+git clone git://git.cs.swarthmore.edu/xsede-demos
 
 
 basic git help
 --------------
 http://www-cs-students.stanford.edu/~blynn/gitmagic/
+http://svn.cs.swarthmore.edu/cshelp/wiki/Git
