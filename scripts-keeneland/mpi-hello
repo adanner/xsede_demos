@@ -1,0 +1,54 @@
+#!/bin/bash
+# walltime : maximum wall clock time (hh:mm:ss)
+#PBS -l walltime=00:01:30
+#
+# nodes: number of 16-core nodes
+# ppn: how many cores per node to use (1 through 16)
+#       (you are always charged for the entire node)
+#PBS -l nodes=2:ppn=4
+#
+#select qsub queue
+#PBS -q batch
+#
+# job name (default = name of script file)
+#PBS -N mpi-hello
+#
+# join stdin/stderr
+#PBS -j oe
+#
+# filename or directory for standard output (default = <job_name>.o<job_id>)
+#PBS -o $HOME/logs/
+# End of embedded QSUB options
+#
+# echo commands before execution; use for debugging
+set -x               
+#
+
+
+BINHOME=$HOME/xsede-demos/build
+
+#get number of processors from nodefile
+NP=`wc -l ${PBS_NODEFILE} | cut -d'/' -f1`
+
+### setenv any other vars you might need
+### must setenv these to avoid hanging on ib  
+qstat -f $PBS_JOBID
+
+MPIRUN=""
+
+module list
+
+if which mpirun | grep -q openmpi 
+then
+  echo "Using OpenMPI"
+  #if using openmpi, we can dump the standard output of each process
+  #to a separate file
+  MPIRUN="mpirun --output-filename $HOME/logs/$PBS_JOBNAME.o${PBS_JOBID}log"
+else
+  MPIRUN="mpirun_rsh -ssh"
+  echo "Using MVAPICH2"
+fi
+
+### run mpi
+${MPIRUN} -np ${NP} -hostfile ${PBS_NODEFILE} $BINHOME/mpi-hello
+
