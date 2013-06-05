@@ -10,7 +10,7 @@ __global__ void scalarVecSum( int* a, int* b, int N, int scale, int* c);
  * returns 0 if error, or no devices found.*/
 int getGPUCount(){
 	int ans=0;
-  if(cudaGetDeviceCount(&ans) != cudaSuccess){
+	if(cudaGetDeviceCount(&ans) != cudaSuccess){
 		return 0;
 	}
 	return ans;
@@ -63,10 +63,11 @@ void addVectors(int* a, int* b, int N, int scale, int* c){
 /* Compute vector sum c=a+scale*b on GPU. a,b,c reside on GPU memory.
  * This function must be launched as a CUDA kernel */
 __global__ void scalarVecSum( int* a, int* b, int N, int scale, int* c) {
-    int tid = blockIdx.x;    // this thread handles the data at its thread id
-    if (tid < N){
-        c[tid] = a[tid] + scale*b[tid];
-		}
+	// this thread handles the data at its thread id
+	int tid = blockIdx.x;    
+	if (tid < N){
+		c[tid] = a[tid] + scale*b[tid];
+	}
 }
 
 

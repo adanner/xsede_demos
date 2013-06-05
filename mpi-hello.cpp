@@ -17,7 +17,8 @@ int main(int /*argc*/, char ** /*argv*/)
     MPI::Init();
     rank = MPI::COMM_WORLD.Get_rank();
     size = MPI::COMM_WORLD.Get_size();
-    std::cout << "Hello, world!  I am " << rank << " of " << size << std::endl;
+    std::cout << "Hello, world!  I am " << rank+1 << 
+	" of " << size << std::endl;
     MPI::Finalize();
 
     return 0;

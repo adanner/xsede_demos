@@ -8,7 +8,7 @@
  * and computes the vector sum c=a+k*b, where k is a scalar. prints 
  * the results and exits */
 int main(int argc, char** argv){
-  
+
 	if (argc != 2){
 		printf("Usage: %s <size>\n", argv[0]);
 		return 1;
@@ -20,8 +20,9 @@ int main(int argc, char** argv){
 	MPI::Init();
 	rank = MPI::COMM_WORLD.Get_rank();
 	size = MPI::COMM_WORLD.Get_size();
-  std::cout << "Hello, world! I am " << rank << " of " << size << std::endl;
-	
+	std::cout << "Hello, world! I am " << rank+1 << 
+		" of " << size << std::endl;
+
 	int* a = new int[n];
 	int* b = new int[n];
 	int* c = new int[n];
@@ -34,7 +35,7 @@ int main(int argc, char** argv){
 
 	//Get number of GPUs per physical host
 	int ngpus = getGPUCount();
- 
+
 	std::cout << "I see " << ngpus << " CUDA devices on this host " 
 		<< std::endl;
 
@@ -46,14 +47,14 @@ int main(int argc, char** argv){
 	int myGPU = pickGPU(rank,ngpus);
 	std::cout << "Using gpu ID " << myGPU << std::endl;
 
-  if(myGPU == -1){
-    printf("Unable to select GPU. Ensure MPI processes"
-	  		" per host is no greater than number of GPUs");
+	if(myGPU == -1){
+		printf("Unable to select GPU. Ensure MPI processes"
+				" per host is no greater than number of GPUs");
 		return 3;
-  }
-	
+	}
+
 	//Call the function that hides all the CUDA details
-  std::cout << "Running CUDA kernel...." << std::endl;
+	std::cout << "Running CUDA kernel...." << std::endl;
 	addVectors(a,b,n,rank,c);
 
 	// display the results
@@ -64,8 +65,8 @@ int main(int argc, char** argv){
 	delete [] a;
 	delete [] b;
 	delete [] c;
-	
+
 	MPI::Finalize();
-	
+
 	return 0;
 }

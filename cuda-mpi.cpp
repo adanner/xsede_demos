@@ -8,7 +8,7 @@
  * and computes the vector sum c=a+k*b, where k is a scalar. prints 
  * the results and exits */
 int main(int argc, char** argv){
-  
+
 	if (argc != 2){
 		printf("Usage: %s <size>\n", argv[0]);
 		return 1;
@@ -20,8 +20,9 @@ int main(int argc, char** argv){
 	MPI::Init();
 	rank = MPI::COMM_WORLD.Get_rank();
 	size = MPI::COMM_WORLD.Get_size();
-  std::cout << "Hello, world! I am " << rank << " of " << size << std::endl;
-	
+	std::cout << "Hello, world! I am " << rank+1 <<
+		" of " << size << std::endl;
+
 	int* a = new int[n];
 	int* b = new int[n];
 	int* c = new int[n];
@@ -32,7 +33,7 @@ int main(int argc, char** argv){
 		c[i]=0;
 	}
 
-  std::cout << "Running CUDA kernel...." << std::endl;
+	std::cout << "Running CUDA kernel...." << std::endl;
 	//Call the function that hides all the CUDA details
 	addVectors(a,b,n,rank,c);
 
@@ -44,8 +45,8 @@ int main(int argc, char** argv){
 	delete [] a;
 	delete [] b;
 	delete [] c;
-	
+
 	MPI::Finalize();
-	
+
 	return 0;
 }
