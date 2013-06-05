@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# adapted from http://www.tacc.utexas.edu/user-services/user-guides/stampede-user-guide#appdev
+# see also /share/doc/sge on stampede
+
+#SBATCH -p normal	   # Queue(partition)
+#SBATCH -t 01:30:00		   # runtime
+#SBATCH -J hello                # Job Name
+#SBATCH -o hello.out   # Name of the output file
+#SBATCH -n 1		   #total number of MPI tasks requested
+#SBATCH --mail-type=begin
+#SBATCH --mail-type=end
+
+set -x                     # Echo commands, use "set echo" with csh
+
+#set the path to the executables
+export BINHOME=$HOME/xsede-demos/build
+
+$BINHOME/hello             # Run the single thread executable named "hello"
+
