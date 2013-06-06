@@ -4,28 +4,16 @@
 #SBATCH -p normal          # Queue(partition)
 #SBATCH -t 00:01:00                # runtime              
 #SBATCH -J mpi-hello		#Job Name
-#SBATCH -o $HOME/logs/myMPI.o%j  # Name of the output file (eg. myMPI.oJobID) 
+#SBATCH -o myMPI.o%j  # Name of the output file (eg. myMPI.oJobID) 
 #SBATCH --mail-type=begin	#Send Mail at Beginning and End
 #SBATCH --mail-type=end		
 #SBATCH -n 8
 #SBATCH -N 1
 
-#reduce the number of mpi jobs from the max available from -pe
-export MY_NSLOTS=7
-
 #set the path to the executables
 export BINHOME=$HOME/xsede-demos/build
 #run app 
 
-
-LOGOPT=""
-
-#if using openmpi, we can dump the standard output of each process
-#to a separate file
-if which mpirun | grep -q openmpi 
-then
-  LOGOPT="--output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log"
-fi
-
-ibrun $LOGOPT $BINHOME/mpi-hello       
+ibrun $BINHOME/mpi-hello       
+mv myMPI.o$SLURM_JOB_ID $HOME/logs
 

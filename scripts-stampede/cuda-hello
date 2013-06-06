@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# adapted from http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#appdev
-# see also /share/doc/sge on longhorn
+# adapted from http://www.tacc.utexas.edu/user-services/user-guides/stampede-user-guide#appdev
+# see also /share/doc/sge on Stampede
 
 #SBATCH -J cuda-hello           # Job Name
-#SBATCH -o output.out   # Name of the output file
+#SBATCH -o cudahello.o%j   # Name of the output file
 #SBATCH -p gpudev                # Queue Name
 #SBATCH -t  00:00:15            # Run time (hh:mm:ss)
 #SBATCH --mail-type=begin       #Send Mail at Beginning and End
@@ -15,4 +15,4 @@ set -x                     # Echo commands, use "set echo" with csh
 #set the path to the executables
 export BINHOME=$HOME/xsede-demos/build
 $BINHOME/cuda-hello        # Run the single thread cuda app "cuda-hello"
-
+mv cudahello.o$SLURM_JOB_ID $HOME/logs

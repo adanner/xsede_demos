@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# adapted from http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#appdev
-# see also /share/doc/sge on longhorn
+# adapted from http://www.tacc.utexas.edu/user-services/user-guides/stampede-user-guide#appdev
+# see also /share/doc/sge on Stampede
 
 #SBATCH -J	cuda-mpi	#JobName
-#SBATCH -o output2.out            # Name of the output file
-#SBATCH -n 8 			           
+#SBATCH -o CUDAMPI.o%j            # Name of the output file
+#SBATCH -n 4			#Number of processes
+#BATCH -N 4 			#Number of nodes           
 #SBATCH -p gpudev          # Queue name "normal|long|largemem|development"
 #SBATCH --mail-type=begin       #Send Mail at Beginning and End
 #SBATCH --mail-type=end  
@@ -16,11 +17,6 @@ set -x                     # Echo commands, use "set echo" with csh
 export BINHOME=$HOME/xsede-demos/build
 LOGOPT=""
 
-#if using openmpi, we can dump the standard output of each process
-#to a separate file
-if which mpirun | grep -q openmpi 
-then
-  LOGOPT="--output-filename $HOME/logs/$JOB_NAME.o${JOB_ID}log"
-fi
-
 ibrun $LOGOPT $BINHOME/cuda-mpi 8
+mv CUDAMPI.o$SLURM_JOB_ID $HOME/logs
+
