@@ -1,5 +1,4 @@
 Andrew Danner 21 Sep 2011
-adanner@cs.swarthmore.edu
 
 This document describes using the batch submission tool qsub on longhorn
 
@@ -14,7 +13,7 @@ running hello world
 in the jobscripts directory, we can start with 
 longhorn-hello
 
-If you are not adanner, you may want to change the -M flag for email notifications and the BINHOME directory to match your setup before running the script
+If you are not you may want to change the -M flag for email notifications and the BINHOME directory to match your setup before running the script
 
 I started with the script at http://www.tacc.utexas.edu/user-services/user-guides/longhorn-user-guide#running , but it doesn't explain a few things I found important, the most confusing being the parallel environment or the -pe flag
 
